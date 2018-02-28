@@ -37,7 +37,7 @@ public class JmsBootAppApplication {
             DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 
-        factory.setErrorHandler(t -> System.err.println("An error has occurred in the transaction "+t.getMessage()));
+        factory.setErrorHandler(t -> System.err.println("An error has occurred in the transaction " + t.getMessage()));
 
         configurer.configure(factory, connectionFactory);
         return factory;
@@ -46,8 +46,7 @@ public class JmsBootAppApplication {
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setTargetType(MessageType.BYTES);
-//        converter.setTypeIdPropertyName("_type");
+        converter.setTargetType(MessageType.TEXT);
         return converter;
     }
 
