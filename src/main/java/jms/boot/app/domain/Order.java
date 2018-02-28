@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Builder
 @Getter
 @Setter
-@Entity
+@Entity(name = "ORDERS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order implements Serializable {
@@ -18,8 +18,11 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long orderId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "address")
     private String address;
+    @Column(name = "price")
     private double price;
 
 } 

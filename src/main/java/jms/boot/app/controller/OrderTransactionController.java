@@ -1,6 +1,7 @@
 package jms.boot.app.controller;
 
 import jms.boot.app.domain.Order;
+import jms.boot.app.repository.OrderTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
@@ -15,11 +16,20 @@ public class OrderTransactionController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private OrderTransactionRepository orderTransactionRepository;
+
     @PostMapping("/send")
     public void send(@RequestBody Order order) {
         log.info("sender : " + order);
         jmsTemplate.convertAndSend("OrderTransactionQueue", order);
 
+    }
+
+    @DeleteMapping("/deleteOrder")
+    public void deleteOrder(@RequestBody Order order) {
+        log.info("deleteOrder : " + order);
+        orderTransactionRepository.delete(order);
     }
 
     @GetMapping("/getObject")
