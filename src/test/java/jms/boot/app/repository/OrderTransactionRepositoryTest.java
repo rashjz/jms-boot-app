@@ -1,24 +1,22 @@
 package jms.boot.app.repository;
 
-import jms.boot.app.JmsBootAppApplication;
 import jms.boot.app.domain.Order;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {JmsBootAppApplication.class})
+@DataJpaTest
 public class OrderTransactionRepositoryTest {
 
-    @MockBean
+    @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
@@ -27,23 +25,21 @@ public class OrderTransactionRepositoryTest {
 
     @Test
     public void testSaveOrderEntity() {
-        when(entityManager.persist(expectedOrder())).thenReturn(Order.builder()
-                .address("address")
-                .name("name")
-                .orderId(1L)
-                .build());
-        Order order1 = orderTransactionRepository.save(expectedOrder());
-        Assert.assertTrue(order1.getOrderId() == 1L);
+        Order expectedOrder = entityManager.persist(expectedOrder());
+        Order actualOrder = orderTransactionRepository.getOne(expectedOrder.getOrderId());
+
+        Assert.assertNotNull(expectedOrder);
+        Assert.assertEquals(expectedOrder, actualOrder);
     }
 
     @Test
-    public void testGetOrder() {
-        when(entityManager.find(Order.class, 1L)).thenReturn(expectedOrder());
-        orderTransactionRepository.getOne(1L);
+    public void getOneCheckExpectedResult() {
+        Order order = orderTransactionRepository.getOne(1L);
+        Assert.assertNotNull(order);
     }
 
     @Test(expected = Exception.class)
-    public void testGetOrderExpectException() {
+    public void getOrderExpectException() {
         when(entityManager.find(Order.class, 1L)).thenThrow(new Exception());
         orderTransactionRepository.getOne(1L);
     }
@@ -52,7 +48,7 @@ public class OrderTransactionRepositoryTest {
         return Order.builder()
                 .address("address")
                 .name("name")
-                .orderId(1234L)
+                .price(33L)
                 .build();
     }
 } 
