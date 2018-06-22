@@ -11,7 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.when;
 
-
+/**
+ * OrderTransactionRepositoryTest test cases of {@link OrderTransactionRepository}
+ **/
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class OrderTransactionRepositoryTest {

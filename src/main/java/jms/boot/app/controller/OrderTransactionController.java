@@ -1,6 +1,7 @@
 package jms.boot.app.controller;
 
 import jms.boot.app.domain.Order;
+import jms.boot.app.exception.OrderNotFoundException;
 import jms.boot.app.repository.OrderTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/transaction")
 public class OrderTransactionController {
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    private final JmsTemplate jmsTemplate;
+
+    private final OrderTransactionRepository orderTransactionRepository;
 
     @Autowired
-    private OrderTransactionRepository orderTransactionRepository;
+    public OrderTransactionController(JmsTemplate jmsTemplate, OrderTransactionRepository orderTransactionRepository) {
+        this.jmsTemplate = jmsTemplate;
+        this.orderTransactionRepository = orderTransactionRepository;
+    }
 
     @PostMapping("/send")
     public void send(@RequestBody Order order) {
@@ -27,7 +32,7 @@ public class OrderTransactionController {
     }
 
     @DeleteMapping("/deleteOrder")
-    public void deleteOrder(@RequestBody Order order) {
+    public void deleteOrder(@RequestBody Order order)  throws OrderNotFoundException {
         log.info("deleteOrder : " + order);
         orderTransactionRepository.delete(order);
     }

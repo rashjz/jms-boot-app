@@ -14,11 +14,16 @@ import javax.jms.TextMessage;
 @Component
 public class JsonMessageConverter implements MessageConverter {
 
+    private final ObjectMapper mapper;
+
     @Autowired
-    private ObjectMapper mapper;
+    public JsonMessageConverter(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
 
     @Override
-    public javax.jms.Message toMessage(Object object, Session session) throws JMSException, MessageConversionException {
+    public javax.jms.Message toMessage(Object object, Session session) throws JMSException {
         String json;
 
         try {
@@ -34,7 +39,7 @@ public class JsonMessageConverter implements MessageConverter {
     }
 
     @Override
-    public Object fromMessage(javax.jms.Message message) throws JMSException, MessageConversionException {
+    public Object fromMessage(javax.jms.Message message) throws JMSException {
         return ((TextMessage) message).getText();
     }
 }

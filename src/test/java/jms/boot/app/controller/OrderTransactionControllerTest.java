@@ -25,6 +25,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * OrderTransactionControllerTest test cases of {@link OrderTransactionController}
+ **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {JmsBootAppApplication.class})
 @WebAppConfiguration
@@ -86,4 +89,4 @@ public class OrderTransactionControllerTest {
                 .orderId(1234L)
                 .build();
     }
-} 
+}

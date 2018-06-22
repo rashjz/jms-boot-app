@@ -13,8 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderTransactionReceiver {
 
+    private final OrderTransactionRepository transactionRepository;
+
     @Autowired
-    private OrderTransactionRepository transactionRepository;
+    public OrderTransactionReceiver(OrderTransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
 
     @JmsListener(destination = "OrderTransactionQueue", containerFactory = "myFactory")
