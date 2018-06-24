@@ -11,7 +11,6 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
 
 @Configuration
 public class JmsConfigDetails {
