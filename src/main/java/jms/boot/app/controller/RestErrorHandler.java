@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class RestErrorHandler {
 
-
     @ExceptionHandler(OrderNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleTodoNotFoundException(OrderNotFoundException ex) {
-        log.debug("handling 404 error on a order entry");
+        log.debug("handling 404 error on a order entry" + ex.getMessage());
     }
 }
