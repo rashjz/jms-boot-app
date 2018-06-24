@@ -35,7 +35,7 @@ public class JmsConfigDetails {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) throws JMSException {
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
         return new JmsTemplate(connectionFactory);
     }
 }
