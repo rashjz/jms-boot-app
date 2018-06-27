@@ -11,8 +11,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity(name = "ORDERS")
-//@NamedQueries({ @NamedQuery(name = "Order.getAllAddress",
-//        query = "from ORDERS o where o.address = :address") })
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order implements Serializable {
