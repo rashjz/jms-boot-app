@@ -46,9 +46,8 @@ public class OrderTransactionController {
     }
 
     @GetMapping("/getAllAddresses")
-    public @ResponseBody
-    List<OrderDTO> getAllAddresses(@RequestParam(name = "address") String address,
-                                   @RequestParam(name = "requestId") Long requestId) {
+    public List<OrderDTO> getAllAddresses(@RequestParam(name = "address") String address,
+                                          @RequestParam(name = "requestId") Long requestId) {
         log.info("getAllAddresses : params {} " + address + " " + requestId);
         List<Order> orders = orderTransactionRepository.findOrdersForAddressWherePriceIsMoreThanFifty(address);
 
@@ -58,10 +57,16 @@ public class OrderTransactionController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/order/{orderName}")
+    public List<Order> getOrdersByOrderName(@PathVariable String orderName) {
+        log.info("Get all orders with orderName {} ",orderName);
+        return orderTransactionRepository.findByName(orderName)
+                .orElseThrow(() -> new OrderNotFoundException("not found ",400));
+    }
+
+
     @GetMapping("/getObject")
-    public
-    @ResponseBody
-    Order getObject() {
+    public Order getObject() {
         return Order.builder()
                 .address("address")
                 .name("Rashad Javadov")
