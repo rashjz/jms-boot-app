@@ -58,7 +58,7 @@ public class OrderTransactionController {
     }
 
     @GetMapping("/order/{orderName}")
-    public List<Order> getOrdersByOrderName(@PathVariable String orderName) {
+    public List<Order> getOrdersByOrderName(@PathVariable String orderName) throws OrderNotFoundException {
         log.info("Get all orders with orderName {} ",orderName);
         return orderTransactionRepository.findByName(orderName)
                 .orElseThrow(() -> new OrderNotFoundException("not found ",400));
