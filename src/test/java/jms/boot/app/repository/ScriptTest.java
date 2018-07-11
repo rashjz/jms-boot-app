@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -21,28 +22,25 @@ import static org.junit.Assert.assertNotNull;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2, replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ScriptTest {
-
+    
+    private static final boolean CONTINUE_ON_ERROR = true;
+    private static final boolean IGNORE_FAILED_DROPS = true;
+    private static final String COMMENT_PREFIX = "--";
+    private static final String SEPARATOR = "/";
+    private static final String BLOCK_COMMENT_START_DELIMITER = "--";
+    private static final String BLOCK_COMMENT_END_DELIMITER = "--";
     @Autowired
     DataSource dataSource;
 
     @Test
     public void test1() throws SQLException {
-        Connection connection = dataSource.getConnection();
-        assertNotNull(connection);
-        new PrepareStatementSql().executeSqlScript(connection, new File("sql/schema.sql"));
-
-        connection.createStatement().execute("INSERT INTO ORDERS VALUES (1,'1','1',1);");
-        connection.createStatement().execute("INSERT INTO ORDERS VALUES (2,'1','1',1);");
-        ResultSet resultSet = connection.createStatement().executeQuery("select count(*) FROM ORDERS");
-
-        resultSet.next();
-        int rowCount = resultSet.getInt(1);
-        System.out.println(rowCount);
-
-
-        Assert.assertEquals(2, rowCount);
-        resultSet.close();
-
-
+      ScriptUtils.executeSqlScript(dataSource.getConnection(),
+                new EncodedResource(new ClassPathResource("schema.sql")),
+                CONTINUE_ON_ERROR,
+                IGNORE_FAILED_DROPS
+                , COMMENT_PREFIX,
+                ScriptUtils.DEFAULT_STATEMENT_SEPARATOR,
+                BLOCK_COMMENT_START_DELIMITER,
+                BLOCK_COMMENT_END_DELIMITER);
     }
 }
