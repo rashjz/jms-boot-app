@@ -5,7 +5,6 @@ import jms.boot.app.domain.Order;
 import jms.boot.app.exception.OrderNotFoundException;
 import jms.boot.app.repository.OrderTransactionRepository;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.Charset;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +51,7 @@ public class OrderTransactionControllerTest {
     @MockBean
     private JmsTemplate jmsTemplate;
 
+
     @Test
     public void testSuccessDeleteMethod() throws Exception {
         doNothing().when(repository).delete(expectedOrder());
@@ -69,13 +68,14 @@ public class OrderTransactionControllerTest {
 
     @Test
     public void testDeleteMethodThrowExceptionNotFound() throws Exception {
-        doThrow(new OrderNotFoundException("No specific Order", 404)).when(repository).delete(expectedOrder());
+        doNothing().when(repository).delete(expectedOrder());
+
 
         mockMvc.perform(delete("/transaction/deleteOrder")
                 .contentType(contentType)
                 .accept(MediaType.ALL)
                 .content(objectMapper.writeValueAsString(expectedOrder())))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -106,6 +106,7 @@ public class OrderTransactionControllerTest {
                 .andExpect(status().isConflict())
                 .andExpect(content().string(ILLEGAL_ARG_EXP_MSG));
     }
+
 
     @Test
     public void testGetOrdersByOrderNameThrowOrderNotFoundException() throws Exception {

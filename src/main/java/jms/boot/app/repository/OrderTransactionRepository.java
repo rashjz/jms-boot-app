@@ -1,6 +1,7 @@
 package jms.boot.app.repository;
 
 import jms.boot.app.domain.Order;
+import jms.boot.app.exception.OrderNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,6 @@ public interface OrderTransactionRepository extends JpaRepository<Order, Long> {
     @Query("select o FROM ORDERS o WHERE o.address = :address")
     List<Order> findOrdersForAddressWherePriceIsMoreThanFifty(@Param("address") String address);
 
-    Optional<List<Order>> findByName(String orderName);
+    Optional<List<Order>> findByName(String orderName) throws OrderNotFoundException;
 
 }

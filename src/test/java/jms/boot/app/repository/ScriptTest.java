@@ -24,6 +24,7 @@ public class ScriptTest {
     private static final String COMMENT_PREFIX = "--";
     private static final String BLOCK_COMMENT_START_DELIMITER = "--";
     private static final String BLOCK_COMMENT_END_DELIMITER = "--";
+
     @Autowired
     private DataSource dataSource;
 
