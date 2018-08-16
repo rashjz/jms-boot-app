@@ -72,20 +72,28 @@
     </dependencies>
 
     <build>
-       <resources>
-        <resource>
-            <directory>sql</directory>
-        </resource>
-    </resources>
+        <resources>
+            <resource>
+                <directory>sql</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>**/*ScriptTest.java</exclude>
-                    </excludes>
                     <executable>true</executable>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*Script/*.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
